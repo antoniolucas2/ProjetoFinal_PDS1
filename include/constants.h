@@ -8,7 +8,10 @@ enum ERROS_ALLEGRO{ALLEGRO_NAO_INICIOU = 1,
                    ERRO_ADDON_IMAGENS,
                    ERRO_INSTALACAO_AUDIO,
                    ACODECS_NAO_INICIOU,
-                   ERRO_RESERVA_SAMPLES};
+                   ERRO_RESERVA_SAMPLES,
+                   ERRO_CRIACAO_PLAYER,
+                   ERRO_CRIACAO_FILA,
+                   TOTAL_ERROS};
 
 // Total de samples para o audio no Allegro. Por padrao, estou usando 16
 #define TOTAL_AUDIO_SAMPLES 16
