@@ -1,18 +1,23 @@
 GCC_VERSION := -std=c99
 FLAGS := -Wall -Wextra -g
+
 INCLUDE_DIR := include
+OBJ_DIR := obj
+SRC_DIR := src
+
+OBJ_FILES := obj/main.o
 
 MAIN_EXECUTABLE := main
 
-all: compile_main
-	gcc $(GCC_VERSION) $(FLAGS) -I$(INCLUDE_DIR) main.o -o $(MAIN_EXECUTABLE)
-	$(MAKE) clean_obj
+all: $(OBJ_FILES)
+	gcc $(GCC_VERSION) $(FLAGS) -I$(INCLUDE_DIR) $(OBJ_DIR)/*.o -o $(MAIN_EXECUTABLE)
 
-compile_main: main.c
-	gcc $(GCC_VERSION) $(FLAGS) -I$(INCLUDE_DIR) -c main.c -o main.o
+obj/main.o: main.c
+	gcc $(GCC_VERSION) $(FLAGS) -I$(INCLUDE_DIR) -c main.c -o $(OBJ_DIR)/main.o
 
 clean_executable:
 	rm $(MAIN_EXECUTABLE)
 
 clean_obj:
-	rm *.o
+	rm $(OBJ_DIR)/*.o
+
