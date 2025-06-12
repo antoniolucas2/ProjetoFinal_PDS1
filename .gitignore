@@ -6,3 +6,6 @@
 
 # "Des"-ignorar todas as pastas
 !*/
+
+# Ignoro o arquivo do clangd
+.clangd
