@@ -1,0 +1,8 @@
+# Ignorar todos os arquivos
+*
+
+# "Des"-ignorar todos os arquivos com extensao
+!*.*
+
+# "Des"-ignorar todas as pastas
+!*/
