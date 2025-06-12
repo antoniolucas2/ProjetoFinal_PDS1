@@ -1,0 +1,7 @@
+#ifndef CHARACTER_HEADER
+#define CHARACTER_HEADER
+
+enum TYPE_CHARACTER{PLAYER=0, ENEMY, BULLET};
+typedef struct STRUCT_CHARACTER character;
+
+#endif

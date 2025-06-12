@@ -1,4 +1,7 @@
 #include <allegro5/allegro.h>
+#include <allegro5/allegro_image.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -21,5 +24,34 @@ void initialize_allegro(){
     exit(TECLADO_NAO_FOI_INSTALADO);
 
   }
+
+  if(!al_init_image_addon()){
+
+    fprintf(stderr, "Nao consegui iniciar o addon de imagens!\n");
+    exit(ERRO_ADDON_IMAGENS);
+
+  }
+
+  if(!al_install_audio()){
+
+    fprintf(stderr, "Nao consegui instalar o audio!\n");
+    exit(ERRO_INSTALACAO_AUDIO);
+
+  }
+
+  if(!al_init_acodec_addon()){
+
+    fprintf(stderr, "Nao consegui iniciar os codecs de audio!\n");
+    exit(ACODECS_NAO_INICIOU);
+
+  }
+
+  if(!al_reserve_samples(TOTAL_AUDIO_SAMPLES)){
+
+    fprintf(stderr, "Nao consegui reservar os %d samples de audio!\n", TOTAL_AUDIO_SAMPLES);
+    exit(ERRO_RESERVA_SAMPLES);
+
+  }
+  
 
 }

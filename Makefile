@@ -8,7 +8,7 @@ SRC_DIR := src
 OBJ_FILES := $(OBJ_DIR)/main.o $(OBJ_DIR)/initialize.o
 HEADER_FILES := $(INCLUDE_DIR)/*.h
 
-LINKER_FILES := -lallegro -lallegro_font
+LINKER_FILES := -lallegro -lallegro_font -lallegro_image -lallegro_audio -lallegro_acodec
 
 MAIN_EXECUTABLE := main
 
