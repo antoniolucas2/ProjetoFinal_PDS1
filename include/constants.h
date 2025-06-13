@@ -10,10 +10,10 @@ enum ERROS_ALLEGRO{ALLEGRO_NAO_INICIOU = 1,
                    ACODECS_NAO_INICIOU,
                    ERRO_RESERVA_SAMPLES,
                    PRIMITIVES_NAO_INICIARAM,
-                   ERRO_CRIACAO_PLAYER,
                    ERRO_CRIACAO_FILA,
                    ERRO_CRIACAO_TIMER,
                    ERRO_CRIACAO_DISPLAY,
+                   ERRO_CRIACAO_LINHA_INIMIGOS,
                    TOTAL_ERROS};
 
 // Total de samples para o audio no Allegro. Por padrao, estou usando 16
@@ -31,6 +31,14 @@ enum ERROS_ALLEGRO{ALLEGRO_NAO_INICIOU = 1,
 #define KEY_DOWN 2
 
 // Constante para a velocidade padrao
-#define DEFAULT_SPEED 8
+#define DEFAULT_SPEED 12
+
+// Constantes para a quantidade de inimigos
+#define TOTAL_ENEMIES_PER_LINE 11
+#define TOTAL_LINES 5
+
+// Constantes dos tamanhos do player e inimigos
+#define PLAYER_ENEMY_WIDTH 60
+#define PLAYER_ENEMY_HEIGHT 50
 
 #endif

@@ -5,7 +5,7 @@ INCLUDE_DIR := include
 OBJ_DIR := obj
 SRC_DIR := src
 
-OBJ_FILES := $(OBJ_DIR)/main.o $(OBJ_DIR)/initialize.o $(OBJ_DIR)/character.o
+OBJ_FILES := $(OBJ_DIR)/main.o $(OBJ_DIR)/initialize.o $(OBJ_DIR)/character.o $(OBJ_DIR)/player.o 
 HEADER_FILES := $(INCLUDE_DIR)/*.h
 
 LINKER_FILES := -lallegro -lallegro_font -lallegro_image -lallegro_audio -lallegro_acodec -lallegro_primitives
@@ -23,6 +23,12 @@ $(OBJ_DIR)/initialize.o: $(SRC_DIR)/initialize.c $(INCLUDE_DIR)/initialize.h
 
 $(OBJ_DIR)/character.o: $(SRC_DIR)/character.c $(INCLUDE_DIR)/character.h
 	gcc $(GCC_VERSION) $(FLAGS) -I$(INCLUDE_DIR) -c $(SRC_DIR)/character.c -o $(OBJ_DIR)/character.o $(LINKER_FILES)
+
+$(OBJ_DIR)/player.o: $(SRC_DIR)/player.c $(INCLUDE_DIR)/player.h
+	gcc $(GCC_VERSION) $(FLAGS) -I$(INCLUDE_DIR) -c $(SRC_DIR)/player.c -o $(OBJ_DIR)/player.o $(LINKER_FILES)
+
+$(OBJ_DIR)/enemies.o: $(SRC_DIR)/enemies.o $(INCLUDE_DIR)/enemies.h
+	gcc $(GCC_VERSION) $(FLAGS) -I$(INCLUDE_DIR) -c $(SRC_DIR)/enemies.c -o $(OBJ_DIR)/enemies.h $(LINKER_FILES)
 
 clean_executable:
 	rm $(MAIN_EXECUTABLE)

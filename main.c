@@ -12,6 +12,7 @@
 #include "constants.h"
 #include "initialize.h"
 #include "character.h"
+#include "player.h"
 
 int main(){
 
@@ -35,8 +36,7 @@ int main(){
   disp = al_create_display(WIDTH_RES, HEIGHT_RES);
   assert_pointer_not_null(disp, "Erro na criacao do display", ERRO_CRIACAO_DISPLAY);
 
-  character* player = create_character(WIDTH_RES*0.45, HEIGHT_RES*0.8, WIDTH_RES*0.55, HEIGHT_RES*0.95, PLAYER, RECTANGLE);
-  assert_pointer_not_null(player, "Erro na criacao do personagem", ERRO_CRIACAO_PLAYER);
+  character player = create_player();
 
   al_register_event_source(queue, al_get_timer_event_source(timer));
   al_register_event_source(queue, al_get_display_event_source(disp));
@@ -65,37 +65,11 @@ int main(){
       case ALLEGRO_EVENT_TIMER:
 
 
-        if(key[ALLEGRO_KEY_LEFT]){
+        if(key[ALLEGRO_KEY_LEFT])
+          move_player_left(&player);
 
-          if(player->posX1-DEFAULT_SPEED > 0){
-            player->posX1 -= DEFAULT_SPEED;
-            player->posX2 -= DEFAULT_SPEED;
-          }
-
-          else{
-
-            player->posX2 -= player->posX1;
-            player->posX1 = 0;
-
-          }
-
-        }
-
-        if(key[ALLEGRO_KEY_RIGHT]){
-
-          if(player->posX2 + DEFAULT_SPEED < WIDTH_RES){
-            player->posX1 += DEFAULT_SPEED;
-            player->posX2 += DEFAULT_SPEED;
-          }
-
-          else{
-
-            player->posX1 += (WIDTH_RES-player->posX2);
-            player->posX2 = WIDTH_RES;
-
-          }
-
-        }
+        if(key[ALLEGRO_KEY_RIGHT])
+          move_player_right(&player);
 
         if(key[ALLEGRO_KEY_ESCAPE])
           done = true;
@@ -121,17 +95,8 @@ int main(){
       redraw = false;
 
       al_clear_to_color(al_map_rgb(0, 0, 0));
+      draw_player(&player);
       
-      if(player->typeShowing == RECTANGLE){
-
-        al_draw_filled_rectangle(player->posX1, player->posY1,
-                                 player->posX2, player->posY2,
-                                 al_map_rgb(0, 60, 70));
-
-        printf("A area do retangulo ta %.3f\n", (player->posX2-player->posX1)*(player->posY2-player->posY1));
-        
-      }
-
       al_flip_display();
 
     }
@@ -141,8 +106,6 @@ int main(){
   al_destroy_event_queue(queue);
   al_destroy_timer(timer);
   al_destroy_display(disp);
-
-  player = destruct_character(player);
 
   return 0;
 
