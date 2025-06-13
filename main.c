@@ -13,6 +13,7 @@
 #include "initialize.h"
 #include "character.h"
 #include "player.h"
+#include "enemies.h"
 
 int main(){
 
@@ -37,6 +38,7 @@ int main(){
   assert_pointer_not_null(disp, "Erro na criacao do display", ERRO_CRIACAO_DISPLAY);
 
   character player = create_player();
+  character** matrix_enemies = create_matrix_enemies();
 
   al_register_event_source(queue, al_get_timer_event_source(timer));
   al_register_event_source(queue, al_get_display_event_source(disp));
@@ -96,12 +98,15 @@ int main(){
 
       al_clear_to_color(al_map_rgb(0, 0, 0));
       draw_player(&player);
+      draw_enemies(matrix_enemies);
       
       al_flip_display();
 
     }
 
   }
+
+  matrix_enemies = destroy_matrix_enemies(matrix_enemies);
 
   al_destroy_event_queue(queue);
   al_destroy_timer(timer);

@@ -5,5 +5,6 @@
 
 character** create_matrix_enemies();
 character** destroy_matrix_enemies(character** matrix);
+void draw_enemies(character** matrix);
 
 #endif

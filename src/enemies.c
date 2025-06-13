@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include <allegro5/allegro_primitives.h>
+
 character** create_matrix_enemies(){
 
   character** matrix_enemies;
@@ -50,5 +52,26 @@ character** destroy_matrix_enemies(character** matrix){
   free(matrix);
 
   return NULL;
+
+}
+
+void draw_enemies(character** matrix){
+
+  if(!matrix){
+
+    printf("Matriz esta vazia! Cuidado!\n");
+    return;
+
+  }
+
+  for(int i = 0; i < TOTAL_LINES; i++){
+
+    for(int j = 0; j < TOTAL_ENEMIES_PER_LINE; j++){
+
+      al_draw_filled_rectangle(matrix[i][j].posX1, matrix[i][j].posY1, matrix[i][j].posX2, matrix[i][j].posY2, al_map_rgb(126, 0, 0));
+
+    }
+
+  }
 
 }
