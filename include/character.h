@@ -4,7 +4,16 @@
 enum TYPE_CHARACTER{PLAYER=0, ENEMY, BULLET};
 enum TYPE_SHOWING{RECTANGLE=0, BITMAP};
 
-typedef struct STRUCT_CHARACTER character;
+typedef struct STRUCT_CHARACTER{
+
+  float posX1, posY1;
+  float posX2, posY2;
+
+  enum TYPE_CHARACTER typeCharacter;
+  enum TYPE_SHOWING typeShowing;
+
+}character;
+
 
 /*
  * Funcao responsavel por criar a personagem, que pode ser o proprio player, um inimigo ou uma bala.

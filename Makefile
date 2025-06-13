@@ -8,7 +8,7 @@ SRC_DIR := src
 OBJ_FILES := $(OBJ_DIR)/main.o $(OBJ_DIR)/initialize.o $(OBJ_DIR)/character.o
 HEADER_FILES := $(INCLUDE_DIR)/*.h
 
-LINKER_FILES := -lallegro -lallegro_font -lallegro_image -lallegro_audio -lallegro_acodec
+LINKER_FILES := -lallegro -lallegro_font -lallegro_image -lallegro_audio -lallegro_acodec -lallegro_primitives
 
 MAIN_EXECUTABLE := main
 
@@ -30,3 +30,5 @@ clean_executable:
 clean_obj:
 	rm $(OBJ_DIR)/*.o
 
+run:
+	./$(MAIN_EXECUTABLE)

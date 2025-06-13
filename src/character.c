@@ -2,16 +2,6 @@
 
 #include <stdlib.h>
 
-typedef struct STRUCT_CHARACTER{
-
-  float posX1, posY1;
-  float posX2, posY2;
-
-  enum TYPE_CHARACTER typeCharacter;
-  enum TYPE_SHOWING typeShowing;
-
-}character;
-
 /*
  * Funcao responsavel por criar a personagem, que pode ser o proprio player, um inimigo ou uma bala.
  * Essa personagem eh sempre tratada como um retangulo.

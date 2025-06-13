@@ -2,6 +2,7 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
+#include <allegro5/allegro_primitives.h>
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -54,6 +55,13 @@ void initialize_allegro(){
 
     fprintf(stderr, "Nao consegui reservar os %d samples de audio!\n", TOTAL_AUDIO_SAMPLES);
     exit(ERRO_RESERVA_SAMPLES);
+
+  }
+
+  if(!al_init_primitives_addon()){
+
+    fprintf(stderr, "Nao consegui iniciar o addon dos primitives!\n");
+    exit(PRIMITIVES_NAO_INICIARAM);
 
   }
   
