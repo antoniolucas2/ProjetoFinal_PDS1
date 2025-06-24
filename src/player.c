@@ -94,8 +94,6 @@ void draw_player(character* player){
         player->posX2, player->posY2,
         al_map_rgb(0, 60, 70));
 
-    printf("A area do retangulo ta %.3f\n", (player->posX2-player->posX1)*(player->posY2-player->posY1));
-
   }
 
 

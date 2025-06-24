@@ -1,7 +1,9 @@
 #ifndef CHARACTER_HEADER
 #define CHARACTER_HEADER
 
-enum TYPE_CHARACTER{PLAYER=0, ENEMY, BULLET};
+#include <stdbool.h>
+
+enum TYPE_CHARACTER{PLAYER=0, ENEMY, PLAYER_BULLET};
 enum TYPE_SHOWING{RECTANGLE=0, BITMAP};
 
 typedef struct STRUCT_CHARACTER{
@@ -11,6 +13,8 @@ typedef struct STRUCT_CHARACTER{
 
   enum TYPE_CHARACTER typeCharacter;
   enum TYPE_SHOWING typeShowing;
+
+  bool active;
 
 }character;
 
@@ -29,5 +33,7 @@ typedef struct STRUCT_CHARACTER{
  * Retorna uma copia para uma personagem.
  */
 character create_character(float posX1, float posY1, float posX2, float posY2, enum TYPE_CHARACTER typeCharacter, enum TYPE_SHOWING typeShowing);
+
+void change_character_active_state(character* currCharacter, bool newState);
 
 #endif

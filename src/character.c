@@ -25,6 +25,14 @@ character create_character(float posX1, float posY1, float posX2, float posY2, e
   newCharacter.typeCharacter = typeCharacter;
   newCharacter.typeShowing = typeShowing;
 
+  newCharacter.active = true;
+
   return newCharacter;
+
+}
+
+void change_character_active_state(character* currCharacter, bool newState){
+
+  currCharacter->active = newState;
 
 }

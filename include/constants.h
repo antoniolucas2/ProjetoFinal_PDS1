@@ -14,13 +14,15 @@ enum ERROS_ALLEGRO{ALLEGRO_NAO_INICIOU = 1,
                    ERRO_CRIACAO_TIMER,
                    ERRO_CRIACAO_DISPLAY,
                    ERRO_CRIACAO_LINHA_INIMIGOS,
+                   ERRO_CRIACAO_MATRIZ_INIMIGOS,
+                   ERRO_VETOR_TOTAL_INIMIGOS,
                    TOTAL_ERROS};
 
 // Total de samples para o audio no Allegro. Por padrao, estou usando 16
 #define TOTAL_AUDIO_SAMPLES 16
 
 // FPS para o jogo
-#define FPS 30.0
+#define FPS 60.0
 
 // Resolucao do jogo
 #define WIDTH_RES  1280
@@ -40,5 +42,20 @@ enum ERROS_ALLEGRO{ALLEGRO_NAO_INICIOU = 1,
 // Constantes dos tamanhos do player e inimigos
 #define PLAYER_ENEMY_WIDTH 60
 #define PLAYER_ENEMY_HEIGHT 50
+
+// Distancia que o inimigo anda
+#define ENEMY_HORIZONTAL_TRAVEL_DISTANCE 20
+#define ENEMY_VERTICAL_TRAVEL_DISTANCE 30
+
+//Distancia inicial que os inimigos devem ter para a parede
+#define WALL_DISTANCE 90
+
+//Calculo quantos frames quero para poder mover os inimigos
+#define TOTAL_FRAMES_TO_MOVE 20
+
+//Dimensoes para a bala
+#define BULLET_WIDTH 5
+#define BULLET_HEIGHT 20
+#define BULLET_SPEED 15
 
 #endif

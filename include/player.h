@@ -9,13 +9,6 @@
 character create_player();
 
 /*
- * Funcao que libera da memoria o jogador.
- * Parametros:
- * player - ponteiro para o jogador.
- */
-character* destroy_player(character* player);
-
-/*
  * Funcao responsavel por mover o player para a esquerda, respeitando o limite da esquerda.
  * Parametros:
  * player - jogador a ser movido para a esquerda. Se for passado uma personagem que nao seja do tipo PLAYER,

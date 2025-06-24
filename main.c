@@ -1,3 +1,5 @@
+#include <allegro5/keycodes.h>
+#include <allegro5/timer.h>
 #include <stdio.h>
 #include <stdbool.h>
 
@@ -14,6 +16,7 @@
 #include "character.h"
 #include "player.h"
 #include "enemies.h"
+#include "bullet.h"
 
 int main(){
 
@@ -38,7 +41,8 @@ int main(){
   assert_pointer_not_null(disp, "Erro na criacao do display", ERRO_CRIACAO_DISPLAY);
 
   character player = create_player();
-  character** matrix_enemies = create_matrix_enemies();
+  character player_bullet = create_player_bullet();
+  enemies all_enemies = create_enemies();
 
   al_register_event_source(queue, al_get_timer_event_source(timer));
   al_register_event_source(queue, al_get_display_event_source(disp));
@@ -48,15 +52,31 @@ int main(){
   bool done = false;
   ALLEGRO_EVENT event;
 
+  int64_t start_frame = 0;
+
   al_start_timer(timer);
 
   while(1){
 
     al_wait_for_event(queue, &event);
+    printf("Tempo: %ld\n", al_get_timer_count(timer));
+
+    if(al_get_timer_count(timer) - start_frame >= TOTAL_FRAMES_TO_MOVE){
+
+      move_enemies(&all_enemies);
+      start_frame = al_get_timer_count(timer);
+      redraw = true;
+
+    }
+
 
     switch(event.type){
 
       case ALLEGRO_EVENT_KEY_DOWN:
+
+        if(event.keyboard.keycode == ALLEGRO_KEY_SPACE)
+          try_shooting_player_bullet(&player_bullet, &player);
+
         key[event.keyboard.keycode] = KEY_NOT_SEEN | KEY_DOWN;
         break;
 
@@ -65,7 +85,6 @@ int main(){
         break;
 
       case ALLEGRO_EVENT_TIMER:
-
 
         if(key[ALLEGRO_KEY_LEFT])
           move_player_left(&player);
@@ -98,7 +117,8 @@ int main(){
 
       al_clear_to_color(al_map_rgb(0, 0, 0));
       draw_player(&player);
-      draw_enemies(matrix_enemies);
+      draw_enemies(all_enemies);
+      draw_bullet(&player_bullet);
       
       al_flip_display();
 
@@ -106,7 +126,7 @@ int main(){
 
   }
 
-  matrix_enemies = destroy_matrix_enemies(matrix_enemies);
+  destroy_enemies(&all_enemies);
 
   al_destroy_event_queue(queue);
   al_destroy_timer(timer);
