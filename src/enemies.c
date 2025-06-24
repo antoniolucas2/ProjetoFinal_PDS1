@@ -15,7 +15,7 @@ character** create_matrix_enemies(){
   matrix_enemies = malloc(TOTAL_LINES * sizeof(character*));
   assert_pointer_not_null(matrix_enemies, "Erro na criacao das linhas das matriz de inimigos", ERRO_CRIACAO_LINHA_INIMIGOS);
 
-  int currentY = 20;
+  int currentY = CEIL_DISTANCE;
   int currentX;
 
   for(int i = 0; i < TOTAL_LINES; i++){
@@ -69,7 +69,7 @@ void draw_enemies(enemies all_enemies){
 
   for(int i = 0; i < TOTAL_LINES; i++){
 
-    for(int j = 0; j < TOTAL_ENEMIES_PER_LINE; j++){
+    for(int j = 0; j < all_enemies.totalEachLine[i]; j++){
 
       al_draw_filled_rectangle(matrix[i][j].posX1, matrix[i][j].posY1, matrix[i][j].posX2, matrix[i][j].posY2, al_map_rgb(126, 0, 0));
 
@@ -131,6 +131,9 @@ void move_enemies_line(enemies* all_enemies){
 
 void move_enemies(enemies* all_enemies){
 
+  if(all_enemies->totalEnemies == 0)
+    return;
+
   int currentLine = all_enemies->currentLineToMove;
 
   while(!all_enemies->totalEachLine[currentLine])
@@ -166,5 +169,60 @@ void move_enemies(enemies* all_enemies){
   }
 
   all_enemies->currentLineToMove = (currentLine+1)%TOTAL_LINES;
+
+}
+
+void remove_enemy(enemies* all_enemies, int lineEnemy, int indexEnemy){
+
+  if(!all_enemies){
+
+    fprintf(stderr, "A matriz de inimigos nao esta alocada. Cuidado!\n");
+    return;
+
+  }
+
+  if(lineEnemy < 0 || lineEnemy >= TOTAL_LINES){
+
+    fprintf(stderr, "Linha errada colocada. Cuidado!\n");
+    return;
+
+  }
+
+  if(indexEnemy < 0 || indexEnemy >= all_enemies->totalEachLine[lineEnemy]){
+
+    fprintf(stderr, "Indice errado do inimigo colocado. Cuidado!\n");
+    return;
+
+  }
+
+  printf("acho que toquei em linhas %d pos %d, e a linha tem um total de %d!\n", lineEnemy, indexEnemy, all_enemies->totalEachLine[lineEnemy]);
+
+  all_enemies->matrix_enemies[lineEnemy][indexEnemy].active = false;
+  character enemyElim = all_enemies->matrix_enemies[lineEnemy][indexEnemy];
+  int i;
+
+  for(i = indexEnemy+1; i < all_enemies->totalEachLine[lineEnemy]; i++)
+    all_enemies->matrix_enemies[lineEnemy][i-1] = all_enemies->matrix_enemies[lineEnemy][i];
+
+  if(i > 0)
+    all_enemies->matrix_enemies[lineEnemy][i-1] = enemyElim;
+
+  all_enemies->totalEachLine[lineEnemy]--;
+  all_enemies->totalEnemies--;
+
+  printf("sai da funcaum\n");
+
+}
+
+character* get_lowest_enemy(enemies all_enemies){
+
+  if(all_enemies.totalEnemies == 0)
+    return NULL;
+
+  int i;
+
+  for(i = TOTAL_LINES-1; i >= 0 && all_enemies.totalEachLine[i] == 0; i--);
+
+  return &all_enemies.matrix_enemies[i][0];
 
 }

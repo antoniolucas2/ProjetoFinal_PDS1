@@ -3,6 +3,7 @@
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_ttf.h>
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -62,6 +63,13 @@ void initialize_allegro(){
 
     fprintf(stderr, "Nao consegui iniciar o addon dos primitives!\n");
     exit(PRIMITIVES_NAO_INICIARAM);
+
+  }
+
+  if(!al_init_ttf_addon()){
+
+    fprintf(stderr, "Nao consegui iniciar o addon para as fontes ttf!\n");
+    exit(NAO_CONSEGUI_INICIAR_TTF_ADDON);
 
   }
   

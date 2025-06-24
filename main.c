@@ -10,6 +10,7 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
+#include <allegro5/allegro_ttf.h>
 
 #include "constants.h"
 #include "initialize.h"
@@ -17,6 +18,7 @@
 #include "player.h"
 #include "enemies.h"
 #include "bullet.h"
+#include "background.h"
 
 int main(){
 
@@ -40,9 +42,13 @@ int main(){
   disp = al_create_display(WIDTH_RES, HEIGHT_RES);
   assert_pointer_not_null(disp, "Erro na criacao do display", ERRO_CRIACAO_DISPLAY);
 
+  font = al_load_ttf_font("fonts/ARIAL.TTF", 50, 0);
+  assert_pointer_not_null(font, "Nao consegui criar a fonte!\n", NAO_CONSEGUI_CRIAR_A_FONTE);
+
   character player = create_player();
   character player_bullet = create_player_bullet();
   enemies all_enemies = create_enemies();
+  background curr_background = create_background(al_map_rgb(BG_R, BG_G, BG_B), player);
 
   al_register_event_source(queue, al_get_timer_event_source(timer));
   al_register_event_source(queue, al_get_display_event_source(disp));
@@ -64,6 +70,8 @@ int main(){
     if(al_get_timer_count(timer) - start_frame >= TOTAL_FRAMES_TO_MOVE){
 
       move_enemies(&all_enemies);
+      done = enemy_on_background(&curr_background, all_enemies);
+
       start_frame = al_get_timer_count(timer);
       redraw = true;
 
@@ -116,11 +124,14 @@ int main(){
       redraw = false;
 
       al_clear_to_color(al_map_rgb(0, 0, 0));
+      draw_background(&curr_background, font);
       draw_player(&player);
       draw_enemies(all_enemies);
-      draw_bullet(&player_bullet);
+      draw_bullet(&player_bullet, &all_enemies);
+      printf("sai total ue\n");
       
       al_flip_display();
+      printf("flipei o display\n");
 
     }
 

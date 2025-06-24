@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 
-enum TYPE_CHARACTER{PLAYER=0, ENEMY, PLAYER_BULLET};
+enum TYPE_CHARACTER{PLAYER=0, ENEMY, PLAYER_BULLET, BACKGROUND};
 enum TYPE_SHOWING{RECTANGLE=0, BITMAP};
 
 typedef struct STRUCT_CHARACTER{
@@ -35,5 +35,6 @@ typedef struct STRUCT_CHARACTER{
 character create_character(float posX1, float posY1, float posX2, float posY2, enum TYPE_CHARACTER typeCharacter, enum TYPE_SHOWING typeShowing);
 
 void change_character_active_state(character* currCharacter, bool newState);
-
+bool overlap_on_x_axis(character* r1, character* r2);
+bool overlap_on_y_axis(character* r1, character* r2);
 #endif

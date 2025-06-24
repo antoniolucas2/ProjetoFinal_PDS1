@@ -1,5 +1,6 @@
 #include "character.h"
 #include "constants.h"
+#include "enemies.h"
 
 #include <stdio.h>
 #include <allegro5/allegro_primitives.h>
@@ -72,12 +73,50 @@ void move_bullet(character* bullet){
 
 }
 
-void draw_bullet(character* bullet){
-
+void draw_bullet(character* bullet, enemies* all_enemies){
+  
   if(!bullet->active)
     return;
 
   move_bullet(bullet);
+
+  int currLine;
+  bool touched = false;
+  character* currEnemy;
+
+  for(currLine = 0; currLine < TOTAL_LINES; currLine++){
+
+    if(all_enemies->totalEachLine[currLine] > 0 && overlap_on_y_axis(bullet, &all_enemies->matrix_enemies[currLine][0]))
+      break;
+
+  }
+
+  if(currLine != TOTAL_LINES){
+
+    for(int i = 0; i < all_enemies->totalEachLine[currLine]; i++){
+
+      currEnemy = &all_enemies->matrix_enemies[currLine][i];
+
+      if(overlap_on_x_axis(currEnemy, bullet)){
+      
+        touched = true;
+        remove_enemy(all_enemies, currLine, i);
+        break;
+
+      }
+
+    }
+
+  }
+
+  if(touched){
+
+    bullet->active = false;
+    printf("Toquei!\n");
+    return;
+
+  }
+
   al_draw_filled_rectangle(bullet->posX1, bullet->posY1, bullet->posX2, bullet->posY2, al_map_rgb(255, 255, 255));
 
 

@@ -1,5 +1,7 @@
 #include "character.h"
 
+#include <stdbool.h>
+
 /*
  * Funcao responsavel por criar a personagem, que pode ser o proprio player, um inimigo ou uma bala.
  * Essa personagem eh sempre tratada como um retangulo.
@@ -34,5 +36,29 @@ character create_character(float posX1, float posY1, float posX2, float posY2, e
 void change_character_active_state(character* currCharacter, bool newState){
 
   currCharacter->active = newState;
+
+}
+
+bool overlap_on_x_axis(character* r1, character* r2){
+
+  if(r1->posX1 >= r2->posX1 && r1->posX1 <= r2->posX2)
+    return true;
+
+  else if(r2->posX1 >= r1->posX1 && r2->posX1 <= r1->posX2)
+    return true;
+
+  return false;
+
+}
+
+bool overlap_on_y_axis(character* r1, character* r2){
+
+  if(r1->posY1 >= r2->posY1 && r1->posY1 <= r2->posY2)
+    return true;
+
+  else if(r2->posY1 >= r1->posY1 && r2->posY1 <= r1->posY2)
+    return true;
+
+  return false;
 
 }

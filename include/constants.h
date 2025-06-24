@@ -16,6 +16,8 @@ enum ERROS_ALLEGRO{ALLEGRO_NAO_INICIOU = 1,
                    ERRO_CRIACAO_LINHA_INIMIGOS,
                    ERRO_CRIACAO_MATRIZ_INIMIGOS,
                    ERRO_VETOR_TOTAL_INIMIGOS,
+                   NAO_CONSEGUI_CRIAR_A_FONTE,
+                   NAO_CONSEGUI_INICIAR_TTF_ADDON,
                    TOTAL_ERROS};
 
 // Total de samples para o audio no Allegro. Por padrao, estou usando 16
@@ -50,12 +52,21 @@ enum ERROS_ALLEGRO{ALLEGRO_NAO_INICIOU = 1,
 //Distancia inicial que os inimigos devem ter para a parede
 #define WALL_DISTANCE 90
 
+//Distancia inicial que os inimigos devem ter para o teto
+#define CEIL_DISTANCE 100
+
 //Calculo quantos frames quero para poder mover os inimigos
-#define TOTAL_FRAMES_TO_MOVE 20
+#define TOTAL_FRAMES_TO_MOVE 3
 
 //Dimensoes para a bala
 #define BULLET_WIDTH 5
 #define BULLET_HEIGHT 20
 #define BULLET_SPEED 15
+
+//Cores para o background, quando usado no formato retangular
+#define BG_R 118
+#define BG_G 171
+#define BG_B 250
+
 
 #endif

@@ -17,5 +17,7 @@ enemies create_enemies();
 void destroy_enemies(enemies* destroy);
 void draw_enemies(enemies all_enemies);
 void move_enemies(enemies* all_enemies);
+void remove_enemy(enemies* all_enemies, int lineEnemy, int indexEnemy);
+character* get_lowest_enemy(enemies all_enemies);
 
 #endif
