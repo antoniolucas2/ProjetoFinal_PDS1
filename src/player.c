@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_image.h>
 
 /*
  * Funcao responsavel por criar o jogador.
@@ -90,11 +91,33 @@ void draw_player(character* player){
 
   if(player->typeShowing == RECTANGLE){
 
-    al_draw_filled_rectangle(player->posX1, player->posY1,
-        player->posX2, player->posY2,
-        al_map_rgb(0, 60, 70));
+    al_draw_filled_rectangle(player->posX1, player->posY1, player->posX2, player->posY2,al_map_rgb(0, 60, 70));
 
   }
 
+  else if(player->typeShowing == BITMAP){
+
+    al_draw_bitmap(player->img, player->posX1, player->posY1, 0);
+
+  }
+
+  else{
+
+    printf("O tipo de amostragem do player esta errado.\n");
+    return;
+
+  }
+
+
+}
+
+void destroy_player(character* player){
+
+  if(player->typeShowing == BITMAP && player->img){
+
+    al_destroy_bitmap(player->img);
+    player->img = NULL;
+
+  }
 
 }

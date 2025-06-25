@@ -2,6 +2,8 @@
 #define CHARACTER_HEADER
 
 #include <stdbool.h>
+#include <allegro5/allegro5.h>
+#include <allegro5/allegro_image.h>
 
 enum TYPE_CHARACTER{PLAYER=0, ENEMY_100, ENEMY_250, ENEMY_500, PLAYER_BULLET, BACKGROUND};
 enum TYPE_SHOWING{RECTANGLE=0, BITMAP};
@@ -15,6 +17,8 @@ typedef struct STRUCT_CHARACTER{
   enum TYPE_SHOWING typeShowing;
 
   bool active;
+
+  ALLEGRO_BITMAP* img;
 
 }character;
 
@@ -32,8 +36,8 @@ typedef struct STRUCT_CHARACTER{
  * Retorno:
  * Retorna uma copia para uma personagem.
  */
-character create_character(float posX1, float posY1, float posX2, float posY2, enum TYPE_CHARACTER typeCharacter, enum TYPE_SHOWING typeShowing);
 
+character create_character(float posX1, float posY1, float posX2, float posY2, enum TYPE_CHARACTER typeCharacter, enum TYPE_SHOWING typeShowing, ...);
 void change_character_active_state(character* currCharacter, bool newState);
 bool overlap_on_x_axis(character* r1, character* r2);
 bool overlap_on_y_axis(character* r1, character* r2);

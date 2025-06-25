@@ -19,6 +19,7 @@ enum ERROS_ALLEGRO{ALLEGRO_NAO_INICIOU = 1,
                    NAO_CONSEGUI_CRIAR_A_FONTE,
                    NAO_CONSEGUI_INICIAR_TTF_ADDON,
                    ERRO_ABERTURA_SAVE,
+                   ERRO_ABERTURA_IMAGEM,
                    TOTAL_ERROS};
 
 // Total de samples para o audio no Allegro. Por padrao, estou usando 16

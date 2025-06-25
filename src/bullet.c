@@ -114,7 +114,7 @@ enum TYPE_CHARACTER draw_bullet(character* bullet, enemies* all_enemies){
   if(touched){
 
     bullet->active = false;
-    printf("Toquei!\n");
+    printf("Toquei! Tipo: %d\n", enemy_type);
     return enemy_type;
 
   }

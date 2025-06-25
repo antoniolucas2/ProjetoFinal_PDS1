@@ -1,6 +1,10 @@
 #include "character.h"
+#include "initialize.h"
+#include "constants.h"
 
 #include <stdbool.h>
+#include <stdarg.h>
+#include <stdio.h>
 
 /*
  * Funcao responsavel por criar a personagem, que pode ser o proprio player, um inimigo ou uma bala.
@@ -15,7 +19,9 @@
  * Retorno:
  * Retorna uma copia para uma personagem.
  */
-character create_character(float posX1, float posY1, float posX2, float posY2, enum TYPE_CHARACTER typeCharacter, enum TYPE_SHOWING typeShowing){
+character create_character(float posX1, float posY1, float posX2, float posY2, enum TYPE_CHARACTER typeCharacter, enum TYPE_SHOWING typeShowing, ...){
+
+  va_list args;
 
   character newCharacter;
 
@@ -28,6 +34,20 @@ character create_character(float posX1, float posY1, float posX2, float posY2, e
   newCharacter.typeShowing = typeShowing;
 
   newCharacter.active = true;
+
+  const char* img_name;
+
+  if(typeShowing == BITMAP){
+
+    va_start(args, typeShowing);
+
+    img_name = va_arg(args, const char*);
+    newCharacter.img = al_load_bitmap(img_name);
+    assert_pointer_not_null(newCharacter.img, "Nao consegui abrir a imagem pra personagem!\n", ERRO_ABERTURA_IMAGEM);
+
+    va_end(args);
+
+  }
 
   return newCharacter;
 

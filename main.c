@@ -66,7 +66,7 @@ int main(){
   while(1){
 
     al_wait_for_event(queue, &event);
-    printf("Tempo: %ld\n", al_get_timer_count(timer));
+    //printf("Tempo: %ld\n", al_get_timer_count(timer));
 
     if(al_get_timer_count(timer) - start_frame >= TOTAL_FRAMES_TO_MOVE){
 
@@ -140,14 +140,13 @@ int main(){
       else if(enemy_hit == ENEMY_500)
         curr_background.totalScore += 500;
 
-      printf("sai total ue\n");
-      
       al_flip_display();
-      printf("flipei o display\n");
 
     }
 
   }
+
+  destroy_player(&player);
 
   save_and_close_save_file(&curr_background);
 

@@ -30,4 +30,6 @@ void move_player_right(character* player);
  */
 void draw_player(character* player);
 
+void destroy_player(character* player);
+
 #endif
