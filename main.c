@@ -42,7 +42,7 @@ int main(){
   disp = al_create_display(WIDTH_RES, HEIGHT_RES);
   assert_pointer_not_null(disp, "Erro na criacao do display", ERRO_CRIACAO_DISPLAY);
 
-  font = al_load_ttf_font("fonts/ARIAL.TTF", 50, 0);
+  font = al_load_ttf_font("fonts/ARIAL.TTF", 40, 0);
   assert_pointer_not_null(font, "Nao consegui criar a fonte!\n", NAO_CONSEGUI_CRIAR_A_FONTE);
 
   character player = create_player();
@@ -148,6 +148,8 @@ int main(){
     }
 
   }
+
+  save_and_close_save_file(&curr_background);
 
   destroy_enemies(&all_enemies);
 

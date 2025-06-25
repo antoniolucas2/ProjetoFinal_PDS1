@@ -18,6 +18,7 @@ enum ERROS_ALLEGRO{ALLEGRO_NAO_INICIOU = 1,
                    ERRO_VETOR_TOTAL_INIMIGOS,
                    NAO_CONSEGUI_CRIAR_A_FONTE,
                    NAO_CONSEGUI_INICIAR_TTF_ADDON,
+                   ERRO_ABERTURA_SAVE,
                    TOTAL_ERROS};
 
 // Total de samples para o audio no Allegro. Por padrao, estou usando 16
@@ -67,6 +68,5 @@ enum ERROS_ALLEGRO{ALLEGRO_NAO_INICIOU = 1,
 #define BG_R 118
 #define BG_G 171
 #define BG_B 250
-
 
 #endif
