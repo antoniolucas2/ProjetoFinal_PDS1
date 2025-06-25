@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 
-enum TYPE_CHARACTER{PLAYER=0, ENEMY, PLAYER_BULLET, BACKGROUND};
+enum TYPE_CHARACTER{PLAYER=0, ENEMY_100, ENEMY_250, ENEMY_500, PLAYER_BULLET, BACKGROUND};
 enum TYPE_SHOWING{RECTANGLE=0, BITMAP};
 
 typedef struct STRUCT_CHARACTER{
@@ -27,7 +27,7 @@ typedef struct STRUCT_CHARACTER{
  * posY1:         indica a posicao Y1 do par (X1,Y1) que estara o ponto mais em cima e mais a esquerda da personagem.
  * posX2:         indica a posicao X2 do par (X2,Y2) que estara o ponto mais abaixo e mais a direita da personagem.
  * posY2:         indica a posicao Y2 do par (X2,Y2) que estara o ponto mais abaixo e mais a direita da personagem.
- * typeCharacter: indica o tipo que a personagem eh, podendo ser PLAYER, ENEMY ou BULLET.
+ * typeCharacter: indica o tipo que a personagem eh, podendo ser PLAYER, ENEMY, BULLET ou BACKGROUND.
  * typeShowing:   indica a forma que a personagem sera mostrada, podendo ser RECTANGLE ou BITMAP.
  * Retorno:
  * Retorna uma copia para uma personagem.

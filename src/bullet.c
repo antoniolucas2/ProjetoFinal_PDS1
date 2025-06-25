@@ -73,16 +73,17 @@ void move_bullet(character* bullet){
 
 }
 
-void draw_bullet(character* bullet, enemies* all_enemies){
+enum TYPE_CHARACTER draw_bullet(character* bullet, enemies* all_enemies){
   
-  if(!bullet->active)
-    return;
-
   move_bullet(bullet);
+
+  if(!bullet->active)
+    return PLAYER_BULLET;
 
   int currLine;
   bool touched = false;
   character* currEnemy;
+  enum TYPE_CHARACTER enemy_type = PLAYER_BULLET;
 
   for(currLine = 0; currLine < TOTAL_LINES; currLine++){
 
@@ -100,6 +101,7 @@ void draw_bullet(character* bullet, enemies* all_enemies){
       if(overlap_on_x_axis(currEnemy, bullet)){
       
         touched = true;
+        enemy_type = all_enemies->matrix_enemies[currLine][i].typeCharacter;
         remove_enemy(all_enemies, currLine, i);
         break;
 
@@ -113,11 +115,12 @@ void draw_bullet(character* bullet, enemies* all_enemies){
 
     bullet->active = false;
     printf("Toquei!\n");
-    return;
+    return enemy_type;
 
   }
 
   al_draw_filled_rectangle(bullet->posX1, bullet->posY1, bullet->posX2, bullet->posY2, al_map_rgb(255, 255, 255));
 
+  return PLAYER_BULLET;
 
 }

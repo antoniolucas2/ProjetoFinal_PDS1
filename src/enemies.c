@@ -17,15 +17,18 @@ character** create_matrix_enemies(){
 
   int currentY = CEIL_DISTANCE;
   int currentX;
+  enum TYPE_CHARACTER curr_enemy_type;
 
   for(int i = 0; i < TOTAL_LINES; i++){
 
     matrix_enemies[i] = malloc(TOTAL_ENEMIES_PER_LINE * sizeof(character));
     currentX = WALL_DISTANCE;
 
+    curr_enemy_type = ((i/2)%3 == 0) ? ENEMY_500 : ((i/2)%3 == 1) ? ENEMY_250 : ENEMY_100;
+
     for(int j = 0; j < TOTAL_ENEMIES_PER_LINE; j++){
 
-      matrix_enemies[i][j] = create_character(currentX, currentY, currentX + PLAYER_ENEMY_WIDTH, currentY + PLAYER_ENEMY_HEIGHT, ENEMY, RECTANGLE);
+      matrix_enemies[i][j] = create_character(currentX, currentY, currentX + PLAYER_ENEMY_WIDTH, currentY + PLAYER_ENEMY_HEIGHT, curr_enemy_type, RECTANGLE);
       currentX += PLAYER_ENEMY_WIDTH + ((WIDTH_RES - 2*WALL_DISTANCE - PLAYER_ENEMY_WIDTH)/(TOTAL_ENEMIES_PER_LINE-1) - PLAYER_ENEMY_WIDTH);
 
     }
@@ -224,5 +227,30 @@ character* get_lowest_enemy(enemies all_enemies){
   for(i = TOTAL_LINES-1; i >= 0 && all_enemies.totalEachLine[i] == 0; i--);
 
   return &all_enemies.matrix_enemies[i][0];
+
+}
+
+bool player_enemy_touch(enemies* all_enemies, character* player){
+
+  character* curr_enemy;
+
+  for(int i = TOTAL_LINES-1; i >= 0; i--){
+
+    for(int j = 0; j < all_enemies->totalEachLine[i]; j++){
+
+      curr_enemy = &all_enemies->matrix_enemies[i][j];
+
+      if(curr_enemy->posY2 < player->posY1)
+        return false;
+
+      else if(overlap_on_x_axis(curr_enemy, player) && overlap_on_y_axis(curr_enemy, player))
+        return true;
+
+    }
+
+
+  }
+
+  return false;
 
 }

@@ -49,6 +49,7 @@ int main(){
   character player_bullet = create_player_bullet();
   enemies all_enemies = create_enemies();
   background curr_background = create_background(al_map_rgb(BG_R, BG_G, BG_B), player);
+  enum TYPE_CHARACTER enemy_hit;
 
   al_register_event_source(queue, al_get_timer_event_source(timer));
   al_register_event_source(queue, al_get_display_event_source(disp));
@@ -77,6 +78,7 @@ int main(){
 
     }
 
+    done = done | player_enemy_touch(&all_enemies, &player);
 
     switch(event.type){
 
@@ -127,7 +129,17 @@ int main(){
       draw_background(&curr_background, font);
       draw_player(&player);
       draw_enemies(all_enemies);
-      draw_bullet(&player_bullet, &all_enemies);
+      enemy_hit = draw_bullet(&player_bullet, &all_enemies);
+
+      if(enemy_hit == ENEMY_100)
+        curr_background.totalScore += 100;
+
+      else if(enemy_hit == ENEMY_250)
+        curr_background.totalScore += 250;
+
+      else if(enemy_hit == ENEMY_500)
+        curr_background.totalScore += 500;
+
       printf("sai total ue\n");
       
       al_flip_display();
