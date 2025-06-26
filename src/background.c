@@ -151,3 +151,21 @@ void add_score_background(background* currBackground, points_warning points){
   currBackground->vector_points[currBackground->total_points-1] = points;
 
 }
+
+void delete_save(background* curr_background){
+
+  if(!curr_background->file_save){
+
+    printf("O arquivo do save nem existe! Cuidado!\n");
+    return;
+
+  }
+
+  fclose(curr_background->file_save);
+  curr_background->file_save = fopen("save/records.txt", "w+");
+  assert_pointer_not_null(curr_background->file_save, "Nao consegui reabrir o arquivo do save", ERRO_ABERTURA_SAVE);
+
+  fprintf(curr_background->file_save, "Record: 0");
+  fseek(curr_background->file_save, SEEK_SET, 0);
+
+}

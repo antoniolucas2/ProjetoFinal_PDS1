@@ -22,7 +22,7 @@ enum ERROS_ALLEGRO{ALLEGRO_NAO_INICIOU = 1,
                    ERRO_ABERTURA_IMAGEM,
                    TOTAL_ERROS};
 
-enum CURRENT_SCREEN{MENU = 1, GAME};
+enum CURRENT_SCREEN{MENU = 1, GAME, HOW_TO_PLAY_SCREEN, SAVE_DELETED};
 
 // Total de samples para o audio no Allegro. Por padrao, estou usando 16
 #define TOTAL_AUDIO_SAMPLES 16
@@ -80,5 +80,10 @@ enum CURRENT_SCREEN{MENU = 1, GAME};
 
 // Total de FPS para o fade da logo
 #define FPS_FADE_LOGO 120
+
+// Opcoes da tela de menu
+#define GAME_OPTION 0
+#define HOW_TO_PLAY 1
+#define DELETE_SAVE 2
 
 #endif

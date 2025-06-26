@@ -40,5 +40,6 @@ void draw_background(background* currBackground, ALLEGRO_FONT* font_score, ALLEG
 bool enemy_on_background(background* currBackground, enemies all_enemies);
 void close_background(background* curr_bg);
 void add_score_background(background* currBackground, points_warning points);
+void delete_save(background* curr_background);
 
 #endif
