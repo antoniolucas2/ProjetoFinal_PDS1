@@ -8,7 +8,7 @@ SRC_DIR := src
 OBJ_FILES := $(OBJ_DIR)/main.o $(OBJ_DIR)/initialize.o $(OBJ_DIR)/character.o $(OBJ_DIR)/player.o $(OBJ_DIR)/enemies.o $(OBJ_DIR)/bullet.o $(OBJ_DIR)/background.o
 HEADER_FILES := $(INCLUDE_DIR)/*.h
 
-LINKER_FILES := -lallegro -lallegro_font -lallegro_image -lallegro_audio -lallegro_acodec -lallegro_primitives -lallegro_ttf
+LINKER_FILES := -lallegro -lallegro_font -lallegro_image -lallegro_audio -lallegro_acodec -lallegro_primitives -lallegro_ttf -lm
 
 MAIN_EXECUTABLE := main
 

@@ -1,6 +1,9 @@
 #include <allegro5/blender.h>
+#include <allegro5/display.h>
 #include <allegro5/keycodes.h>
 #include <allegro5/timer.h>
+
+#include <math.h>
 #include <stdio.h>
 #include <stdbool.h>
 
@@ -71,6 +74,8 @@ int main(){
   enum CURRENT_SCREEN curr_screen = MENU;
 
   int64_t start_frame = 0;
+  int64_t curr_frame;
+  float tmp;
 
   al_start_timer(timer);
 
@@ -78,72 +83,87 @@ int main(){
 
     al_wait_for_event(queue, &event);
     //printf("Tempo: %ld\n", al_get_timer_count(timer));
+    curr_frame = al_get_timer_count(timer);
 
-    if(curr_screen == MENU){}
+    if(curr_screen == MENU){
 
-    else if(curr_screen == GAME){}
+      if(curr_frame > FPS_FADE_LOGO)
+        curr_screen = GAME;
 
-    if(al_get_timer_count(timer) - start_frame >= TOTAL_FRAMES_TO_MOVE){
+      else{
 
-      move_enemies(&all_enemies);
-      done = enemy_on_background(&curr_background, all_enemies);
+        al_draw_tinted_bitmap(logo_img, al_map_rgba_f(1, 1, 1, pow(curr_frame/((float)FPS_FADE_LOGO), 4)), WIDTH_RES*0.18f, HEIGHT_RES*0.2f, 0);
+        al_flip_display();
 
-      start_frame = al_get_timer_count(timer);
-      redraw = true;
+      }
 
     }
 
-    done = done | player_enemy_touch(&all_enemies, &player);
+    else if(curr_screen == GAME){
 
-    switch(event.type){
+      if(al_get_timer_count(timer) - start_frame >= TOTAL_FRAMES_TO_MOVE){
 
-      case ALLEGRO_EVENT_KEY_DOWN:
+        move_enemies(&all_enemies);
+        done = enemy_on_background(&curr_background, all_enemies);
 
-        if(event.keyboard.keycode == ALLEGRO_KEY_SPACE)
-          try_shooting_player_bullet(&player_bullet, &player);
-
-        key[event.keyboard.keycode] = KEY_NOT_SEEN | KEY_DOWN;
-        break;
-
-      case ALLEGRO_EVENT_KEY_UP:
-        key[event.keyboard.keycode] &= ~KEY_DOWN;
-        break;
-
-      case ALLEGRO_EVENT_TIMER:
-
-        if(key[ALLEGRO_KEY_LEFT])
-          move_player_left(&player);
-
-        if(key[ALLEGRO_KEY_RIGHT])
-          move_player_right(&player);
-
-        if(key[ALLEGRO_KEY_ESCAPE])
-          done = true;
-
-        for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
-          key[i] &= ~KEY_NOT_SEEN;
-
+        start_frame = al_get_timer_count(timer);
         redraw = true;
 
-        break;
+      }
 
-      case ALLEGRO_EVENT_DISPLAY_CLOSE:
-        done = true;
-        break;
+      done = done | player_enemy_touch(&all_enemies, &player);
 
-    }
+      switch(event.type){
 
-    if(redraw && al_is_event_queue_empty(queue)){
+        case ALLEGRO_EVENT_KEY_DOWN:
 
-      redraw = false;
+          if(event.keyboard.keycode == ALLEGRO_KEY_SPACE)
+            try_shooting_player_bullet(&player_bullet, &player);
 
-      al_clear_to_color(al_map_rgb(0, 0, 0));
-      draw_background(&curr_background, font_score, font_points_warning);
-      draw_player(&player);
-      draw_bullet(&player_bullet, &all_enemies, &curr_background);
-      draw_enemies(all_enemies);
+          key[event.keyboard.keycode] = KEY_NOT_SEEN | KEY_DOWN;
+          break;
 
-      al_flip_display();
+        case ALLEGRO_EVENT_KEY_UP:
+          key[event.keyboard.keycode] &= ~KEY_DOWN;
+          break;
+
+        case ALLEGRO_EVENT_TIMER:
+
+          if(key[ALLEGRO_KEY_LEFT])
+            move_player_left(&player);
+
+          if(key[ALLEGRO_KEY_RIGHT])
+            move_player_right(&player);
+
+          if(key[ALLEGRO_KEY_ESCAPE])
+            done = true;
+
+          for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
+            key[i] &= ~KEY_NOT_SEEN;
+
+          redraw = true;
+
+          break;
+
+        case ALLEGRO_EVENT_DISPLAY_CLOSE:
+          done = true;
+          break;
+
+      }
+
+      if(redraw && al_is_event_queue_empty(queue)){
+
+        redraw = false;
+
+        al_clear_to_color(al_map_rgb(0, 0, 0));
+        draw_background(&curr_background, font_score, font_points_warning);
+        draw_player(&player);
+        draw_bullet(&player_bullet, &all_enemies, &curr_background);
+        draw_enemies(all_enemies);
+
+        al_flip_display();
+
+      }
 
     }
 
@@ -154,6 +174,8 @@ int main(){
   close_background(&curr_background);
 
   destroy_enemies(&all_enemies);
+
+  al_destroy_bitmap(logo_img);
 
   al_destroy_font(font_score);
   al_destroy_font(font_points_warning);
