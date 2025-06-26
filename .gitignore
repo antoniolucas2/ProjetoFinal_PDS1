@@ -9,3 +9,6 @@
 
 # Ignoro o arquivo do clangd
 .clangd
+
+# Ignoro o records.txt
+save/records.txt
