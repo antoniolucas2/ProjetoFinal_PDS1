@@ -166,6 +166,7 @@ void delete_save(background* curr_background){
   assert_pointer_not_null(curr_background->file_save, "Nao consegui reabrir o arquivo do save", ERRO_ABERTURA_SAVE);
 
   fprintf(curr_background->file_save, "Record: 0");
+  curr_background->last_record = 0;
   fseek(curr_background->file_save, SEEK_SET, 0);
 
 }

@@ -5,6 +5,8 @@
 
 #include <stdio.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 
 character create_player_bullet(){
 
@@ -15,9 +17,7 @@ character create_player_bullet(){
 
 }
 
-void try_shooting_player_bullet(character* player_bullet, character* player){
-
-  printf("ENTREI REAU\n\n\n\n\n\n\n\n\n");
+void try_shooting_player_bullet(character* player_bullet, character* player, ALLEGRO_SAMPLE* spl){
 
   if(player_bullet->typeCharacter != PLAYER_BULLET){
 
@@ -33,7 +33,7 @@ void try_shooting_player_bullet(character* player_bullet, character* player){
 
   }
 
-  printf("ENTREI\n\n\n\n\n");
+  al_play_sample(spl, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
 
   int posX1Player = player->posX1;
   int posY1Player = player->posY1;
@@ -74,7 +74,7 @@ void move_bullet(character* bullet){
 
 }
 
-enum TYPE_CHARACTER draw_bullet(character* bullet, enemies* all_enemies, background* curr_background){
+enum TYPE_CHARACTER draw_bullet(character* bullet, enemies* all_enemies, background* curr_background, ALLEGRO_SAMPLE* enemy_death){
   
   move_bullet(bullet);
 
@@ -109,7 +109,7 @@ enum TYPE_CHARACTER draw_bullet(character* bullet, enemies* all_enemies, backgro
         points.posY = currEnemy->posY1 - 1;
         points.frames_left = FRAME_POINTS;
         add_score_background(curr_background, points);
-        remove_enemy(all_enemies, currLine, i);
+        remove_enemy(all_enemies, currLine, i, enemy_death);
         break;
 
       }

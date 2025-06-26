@@ -20,9 +20,10 @@ enum ERROS_ALLEGRO{ALLEGRO_NAO_INICIOU = 1,
                    NAO_CONSEGUI_INICIAR_TTF_ADDON,
                    ERRO_ABERTURA_SAVE,
                    ERRO_ABERTURA_IMAGEM,
+                   ERRO_CRIACAO_SAMPLE,
                    TOTAL_ERROS};
 
-enum CURRENT_SCREEN{MENU = 1, GAME, HOW_TO_PLAY_SCREEN, SAVE_DELETED};
+enum CURRENT_SCREEN{MENU = 1, GAME, HOW_TO_PLAY_SCREEN, SAVE_DELETED, YOU_WON, YOU_LOST};
 
 // Total de samples para o audio no Allegro. Por padrao, estou usando 16
 #define TOTAL_AUDIO_SAMPLES 16

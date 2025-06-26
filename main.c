@@ -6,6 +6,8 @@
 
 #include <math.h>
 #include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
 #include <stdbool.h>
 
 #include <allegro5/events.h>
@@ -36,7 +38,12 @@ int main(){
   ALLEGRO_BITMAP* logo_img =          NULL;
   ALLEGRO_TIMER* timer =              NULL;
   ALLEGRO_DISPLAY* disp =             NULL;
-  ALLEGRO_AUDIO_STREAM* audioStream = NULL;
+  ALLEGRO_SAMPLE* shoot_sample =      NULL;
+  ALLEGRO_SAMPLE* laser_sample =      NULL;
+  ALLEGRO_SAMPLE* invader_killed =    NULL;
+  ALLEGRO_SAMPLE* enemies_moving =    NULL;
+
+  srand(time(NULL));
 
   unsigned char key[ALLEGRO_KEY_MAX];
   memset(key, 0, sizeof(key));
@@ -61,6 +68,18 @@ int main(){
 
   logo_img = al_load_bitmap("img/logo.png");
   assert_pointer_not_null(logo_img, "Nao consegui abrir a imagem da logo!", ERRO_ABERTURA_IMAGEM);
+
+  shoot_sample = al_load_sample("audio/shoot.wav");
+  assert_pointer_not_null(shoot_sample, "Nao consegui abrir o sample de atirar!", ERRO_CRIACAO_SAMPLE);
+
+  laser_sample = al_load_sample("audio/laser.wav");
+  assert_pointer_not_null(laser_sample, "Nao consegui abrir o sample do laser!", ERRO_CRIACAO_SAMPLE);
+
+  invader_killed = al_load_sample("audio/invaderkilled.wav");
+  assert_pointer_not_null(invader_killed, "Nao consegui abrir o sample do invader killed!", ERRO_CRIACAO_SAMPLE);
+
+  enemies_moving = al_load_sample("audio/enemies_moving.wav");
+  assert_pointer_not_null(enemies_moving, "Nao consegui abrir o sample dos inimigos se movendo!", ERRO_CRIACAO_SAMPLE);
 
   al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
 
@@ -131,8 +150,10 @@ int main(){
             else if(curr_opcao == HOW_TO_PLAY)
               curr_screen = HOW_TO_PLAY_SCREEN;
 
-            else if(curr_opcao == DELETE_SAVE)
+            else if(curr_opcao == DELETE_SAVE){
+              delete_save(&curr_background);             
               curr_screen = SAVE_DELETED;
+            }
 
           }
 
@@ -210,7 +231,7 @@ int main(){
 
         redraw = false;
         al_clear_to_color(al_map_rgb(0, 0, 0));
-        al_draw_multiline_textf(font_menu, al_map_rgb(255, 255, 255), WIDTH_RES/2, HEIGHT_RES*0.5, WIDTH_RES, 0, ALLEGRO_ALIGN_CENTER, "Use as setas para controlar e espaco para atirar!\nAperte enter para voltar pro menu.");
+        al_draw_multiline_textf(font_menu, al_map_rgb(255, 255, 255), WIDTH_RES/2, HEIGHT_RES*0.5, WIDTH_RES, 0, ALLEGRO_ALIGN_CENTER, "Use as setas para controlar e espaco para atirar!\nPara fechar o jogo, aperte ESC ou feche clicando no X no canto superior.\nAperte enter para voltar pro menu.");
         al_flip_display();
 
       }
@@ -218,8 +239,6 @@ int main(){
     }
 
     else if(curr_screen == SAVE_DELETED){
-
-      delete_save(&curr_background);
 
       switch(event.type){
 
@@ -246,22 +265,24 @@ int main(){
 
       if(al_get_timer_count(timer) - start_frame >= TOTAL_FRAMES_TO_MOVE){
 
-        move_enemies(&all_enemies);
-        done = enemy_on_background(&curr_background, all_enemies);
+        move_enemies(&all_enemies, enemies_moving);
+        if(enemy_on_background(&curr_background, all_enemies))
+          curr_screen = YOU_LOST;
 
         start_frame = al_get_timer_count(timer);
         redraw = true;
 
       }
 
-      done = done | player_enemy_touch(&all_enemies, &player);
+      if(player_enemy_touch(&all_enemies, &player))
+        curr_screen = YOU_LOST;
 
       switch(event.type){
 
         case ALLEGRO_EVENT_KEY_DOWN:
 
           if(event.keyboard.keycode == ALLEGRO_KEY_SPACE)
-            try_shooting_player_bullet(&player_bullet, &player);
+            try_shooting_player_bullet(&player_bullet, &player, (rand()%2) ? laser_sample : shoot_sample);
 
           key[event.keyboard.keycode] = KEY_NOT_SEEN | KEY_DOWN;
           break;
@@ -294,8 +315,50 @@ int main(){
         al_clear_to_color(al_map_rgb(0, 0, 0));
         draw_background(&curr_background, font_score, font_points_warning);
         draw_player(&player);
-        draw_bullet(&player_bullet, &all_enemies, &curr_background);
+        draw_bullet(&player_bullet, &all_enemies, &curr_background, invader_killed);
+
+        if(all_enemies.totalEnemies == 0)
+          curr_screen = YOU_WON;
+
         draw_enemies(all_enemies);
+
+        al_flip_display();
+
+      }
+
+    }
+
+    else if(curr_screen == YOU_LOST || curr_screen == YOU_WON){
+
+      switch(event.type){
+
+        case ALLEGRO_EVENT_TIMER:
+          redraw = true;
+          break;
+
+      }
+
+      if(redraw && al_is_event_queue_empty(queue)){
+
+        printf("Ue\n");
+        redraw = false;
+
+        draw_background(&curr_background, font_score, font_points_warning);
+        draw_player(&player);
+
+        al_draw_filled_rectangle(WIDTH_RES*0.1, HEIGHT_RES*0.25, WIDTH_RES*0.9, HEIGHT_RES*0.5, al_map_rgb(0, 0, 0));
+
+        if(curr_screen == YOU_LOST){
+
+          draw_enemies(all_enemies);
+          al_draw_textf(font_menu, al_map_rgb(255, 255, 255), WIDTH_RES/2, HEIGHT_RES*0.4, ALLEGRO_ALIGN_CENTER, "Voce perdeu! Tente novamente depois.");
+
+        }
+
+        else
+          al_draw_textf(font_menu, al_map_rgb(255, 255, 255), WIDTH_RES/2, HEIGHT_RES*0.4, ALLEGRO_ALIGN_CENTER, "Voce salvou os humanos dos aliens! Parabens!");
+
+        al_draw_textf(font_menu, al_map_rgb(255,255,255), WIDTH_RES/2, HEIGHT_RES*0.3, ALLEGRO_ALIGN_CENTER, "Aperte ESC para sair ou feche clicando no X no canto superior direito.");
 
         al_flip_display();
 
@@ -318,6 +381,11 @@ int main(){
   al_destroy_event_queue(queue);
   al_destroy_timer(timer);
   al_destroy_display(disp);
+
+  al_destroy_sample(enemies_moving);
+  al_destroy_sample(invader_killed);
+  al_destroy_sample(shoot_sample);
+  al_destroy_sample(laser_sample);
 
   return 0;
 

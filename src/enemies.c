@@ -7,6 +7,8 @@
 #include <stdio.h>
 
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 
 character** create_matrix_enemies(enemies* all_enemies){
 
@@ -63,7 +65,7 @@ void draw_enemies(enemies all_enemies){
 
   character** matrix = all_enemies.matrix_enemies;
 
-  if(!matrix){
+  if(!matrix || all_enemies.totalEnemies == 0){
 
     printf("Matriz esta vazia! Cuidado!\n");
     return;
@@ -156,7 +158,7 @@ void move_enemies_line(enemies* all_enemies){
 
 }
 
-void move_enemies(enemies* all_enemies){
+void move_enemies(enemies* all_enemies, ALLEGRO_SAMPLE* enemies_moving){
 
   if(all_enemies->totalEnemies == 0)
     return;
@@ -168,6 +170,8 @@ void move_enemies(enemies* all_enemies){
 
   int newX;
   int totalEnemies = all_enemies->totalEachLine[currentLine];
+
+  al_play_sample(enemies_moving, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
 
   if(all_enemies->direction == 1 && all_enemies->matrix_enemies[currentLine][totalEnemies-1].posX2 + ENEMY_HORIZONTAL_TRAVEL_DISTANCE > WIDTH_RES){
     
@@ -201,7 +205,7 @@ void move_enemies(enemies* all_enemies){
 
 }
 
-void remove_enemy(enemies* all_enemies, int lineEnemy, int indexEnemy){
+void remove_enemy(enemies* all_enemies, int lineEnemy, int indexEnemy, ALLEGRO_SAMPLE* explode){
 
   if(!all_enemies){
 
@@ -226,6 +230,7 @@ void remove_enemy(enemies* all_enemies, int lineEnemy, int indexEnemy){
 
   printf("acho que toquei em linhas %d pos %d, e a linha tem um total de %d!\n", lineEnemy, indexEnemy, all_enemies->totalEachLine[lineEnemy]);
 
+  al_play_sample(explode, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
   all_enemies->matrix_enemies[lineEnemy][indexEnemy].active = false;
   character enemyElim = all_enemies->matrix_enemies[lineEnemy][indexEnemy];
   int i;
