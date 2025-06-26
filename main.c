@@ -1,3 +1,4 @@
+#include <allegro5/blender.h>
 #include <allegro5/keycodes.h>
 #include <allegro5/timer.h>
 #include <stdio.h>
@@ -25,7 +26,9 @@ int main(){
   initialize_allegro();
 
   ALLEGRO_EVENT_QUEUE* queue =        NULL;
-  ALLEGRO_FONT* font =                NULL;
+  ALLEGRO_FONT* font_score =          NULL;
+  ALLEGRO_FONT* font_points_warning = NULL;
+  ALLEGRO_BITMAP* logo_img =          NULL;
   ALLEGRO_TIMER* timer =              NULL;
   ALLEGRO_DISPLAY* disp =             NULL;
   ALLEGRO_AUDIO_STREAM* audioStream = NULL;
@@ -42,14 +45,21 @@ int main(){
   disp = al_create_display(WIDTH_RES, HEIGHT_RES);
   assert_pointer_not_null(disp, "Erro na criacao do display", ERRO_CRIACAO_DISPLAY);
 
-  font = al_load_ttf_font("fonts/ARIAL.TTF", 40, 0);
-  assert_pointer_not_null(font, "Nao consegui criar a fonte!\n", NAO_CONSEGUI_CRIAR_A_FONTE);
+  font_score = al_load_ttf_font("fonts/ARIAL.TTF", 40, 0);
+  assert_pointer_not_null(font_score, "Nao consegui criar a fonte!\n", NAO_CONSEGUI_CRIAR_A_FONTE);
+
+  font_points_warning = al_load_ttf_font("fonts/Minecraft.ttf", 10, 0);
+  assert_pointer_not_null(font_points_warning, "Nao consegui criar a fonte dos points warning!\n", NAO_CONSEGUI_CRIAR_A_FONTE);
+
+  logo_img = al_load_bitmap("img/logo.png");
+  assert_pointer_not_null(logo_img, "Nao consegui abrir a imagem da logo!", ERRO_ABERTURA_IMAGEM);
+
+  al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
 
   character player = create_player();
   character player_bullet = create_player_bullet();
   enemies all_enemies = create_enemies();
   background curr_background = create_background(al_map_rgb(BG_R, BG_G, BG_B), player);
-  enum TYPE_CHARACTER enemy_hit;
 
   al_register_event_source(queue, al_get_timer_event_source(timer));
   al_register_event_source(queue, al_get_display_event_source(disp));
@@ -58,15 +68,20 @@ int main(){
   bool redraw = true;
   bool done = false;
   ALLEGRO_EVENT event;
+  enum CURRENT_SCREEN curr_screen = MENU;
 
   int64_t start_frame = 0;
 
   al_start_timer(timer);
 
-  while(1){
+  while(!done){
 
     al_wait_for_event(queue, &event);
     //printf("Tempo: %ld\n", al_get_timer_count(timer));
+
+    if(curr_screen == MENU){}
+
+    else if(curr_screen == GAME){}
 
     if(al_get_timer_count(timer) - start_frame >= TOTAL_FRAMES_TO_MOVE){
 
@@ -118,27 +133,15 @@ int main(){
 
     }
 
-    if(done)
-      break;
-
     if(redraw && al_is_event_queue_empty(queue)){
 
       redraw = false;
 
       al_clear_to_color(al_map_rgb(0, 0, 0));
-      draw_background(&curr_background, font);
+      draw_background(&curr_background, font_score, font_points_warning);
       draw_player(&player);
+      draw_bullet(&player_bullet, &all_enemies, &curr_background);
       draw_enemies(all_enemies);
-      enemy_hit = draw_bullet(&player_bullet, &all_enemies);
-
-      if(enemy_hit == ENEMY_100)
-        curr_background.totalScore += 100;
-
-      else if(enemy_hit == ENEMY_250)
-        curr_background.totalScore += 250;
-
-      else if(enemy_hit == ENEMY_500)
-        curr_background.totalScore += 500;
 
       al_flip_display();
 
@@ -148,10 +151,12 @@ int main(){
 
   destroy_player(&player);
 
-  save_and_close_save_file(&curr_background);
+  close_background(&curr_background);
 
   destroy_enemies(&all_enemies);
 
+  al_destroy_font(font_score);
+  al_destroy_font(font_points_warning);
   al_destroy_event_queue(queue);
   al_destroy_timer(timer);
   al_destroy_display(disp);

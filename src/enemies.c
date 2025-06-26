@@ -8,7 +8,7 @@
 
 #include <allegro5/allegro_primitives.h>
 
-character** create_matrix_enemies(){
+character** create_matrix_enemies(enemies* all_enemies){
 
   character** matrix_enemies;
 
@@ -28,7 +28,7 @@ character** create_matrix_enemies(){
 
     for(int j = 0; j < TOTAL_ENEMIES_PER_LINE; j++){
 
-      matrix_enemies[i][j] = create_character(currentX, currentY, currentX + PLAYER_ENEMY_WIDTH, currentY + PLAYER_ENEMY_HEIGHT, curr_enemy_type, RECTANGLE);
+      matrix_enemies[i][j] = create_character(currentX, currentY, currentX + PLAYER_ENEMY_WIDTH, currentY + PLAYER_ENEMY_HEIGHT, curr_enemy_type, BITMAP, all_enemies->array_bitmaps[(i/2)%3]);
       currentX += PLAYER_ENEMY_WIDTH + ((WIDTH_RES - 2*WALL_DISTANCE - PLAYER_ENEMY_WIDTH)/(TOTAL_ENEMIES_PER_LINE-1) - PLAYER_ENEMY_WIDTH);
 
     }
@@ -74,7 +74,11 @@ void draw_enemies(enemies all_enemies){
 
     for(int j = 0; j < all_enemies.totalEachLine[i]; j++){
 
-      al_draw_filled_rectangle(matrix[i][j].posX1, matrix[i][j].posY1, matrix[i][j].posX2, matrix[i][j].posY2, al_map_rgb(126, 0, 0));
+      if(matrix[i][j].typeShowing == RECTANGLE)
+        al_draw_filled_rectangle(matrix[i][j].posX1, matrix[i][j].posY1, matrix[i][j].posX2, matrix[i][j].posY2, al_map_rgb(126, 0, 0));
+
+      else if(matrix[i][j].typeShowing == BITMAP)
+        al_draw_bitmap(matrix[i][j].img, matrix[i][j].posX1, matrix[i][j].posY1, 0);
 
     }
 
@@ -86,7 +90,19 @@ enemies create_enemies(){
 
   enemies newEnemies;
 
-  newEnemies.matrix_enemies = create_matrix_enemies();
+  ALLEGRO_BITMAP* inimigo100 = al_load_bitmap("img/inimigo100.png");
+  ALLEGRO_BITMAP* inimigo250 = al_load_bitmap("img/inimigo250.png");
+  ALLEGRO_BITMAP* inimigo500 = al_load_bitmap("img/inimigo500.png");
+
+  assert_pointer_not_null(inimigo100, "Nao consegui abrir a imagem do inimigo de 100 pontos!\n", ERRO_ABERTURA_IMAGEM);
+  assert_pointer_not_null(inimigo250, "Nao consegui abrir a imagem do inimigo de 250 pontos!\n", ERRO_ABERTURA_IMAGEM);
+  assert_pointer_not_null(inimigo500, "Nao consegui abrir a imagem do inimigo de 500 pontos!\n", ERRO_ABERTURA_IMAGEM);
+
+  newEnemies.array_bitmaps[0] = inimigo100;
+  newEnemies.array_bitmaps[1] = inimigo250;
+  newEnemies.array_bitmaps[2] = inimigo500;
+
+  newEnemies.matrix_enemies = create_matrix_enemies(&newEnemies);
 
   assert_pointer_not_null(newEnemies.matrix_enemies, "Nao consegui alocar a matriz de inimigos!", ERRO_CRIACAO_MATRIZ_INIMIGOS);
 
@@ -105,6 +121,14 @@ enemies create_enemies(){
 }
 
 void destroy_enemies(enemies* destroy){
+
+  if(destroy->matrix_enemies[0][0].typeShowing == BITMAP){
+
+    al_destroy_bitmap(destroy->array_bitmaps[0]);
+    al_destroy_bitmap(destroy->array_bitmaps[1]);
+    al_destroy_bitmap(destroy->array_bitmaps[2]);
+
+  }
 
   if(destroy->matrix_enemies)
     destroy->matrix_enemies = destroy_matrix_enemies(destroy->matrix_enemies);
@@ -149,6 +173,7 @@ void move_enemies(enemies* all_enemies){
     
     move_enemies_line(all_enemies); 
     all_enemies->direction = -1;
+    return;
 
   }
 
@@ -156,6 +181,7 @@ void move_enemies(enemies* all_enemies){
     
     move_enemies_line(all_enemies); 
     all_enemies->direction = 1;
+    return;
 
   }
 

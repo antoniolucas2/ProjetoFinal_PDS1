@@ -18,22 +18,22 @@ all: $(OBJ_FILES) $(HEADER_FILES)
 $(OBJ_DIR)/main.o: main.c $(HEADER_FILES)
 	gcc $(GCC_VERSION) $(FLAGS) -I$(INCLUDE_DIR) -c main.c -o $(OBJ_DIR)/main.o $(LINKER_FILES)
 
-$(OBJ_DIR)/initialize.o: $(SRC_DIR)/initialize.c $(INCLUDE_DIR)/initialize.h
+$(OBJ_DIR)/initialize.o: $(SRC_DIR)/initialize.c $(HEADER_FILES)
 	gcc $(GCC_VERSION) $(FLAGS) -I$(INCLUDE_DIR) -c $(SRC_DIR)/initialize.c -o $(OBJ_DIR)/initialize.o $(LINKER_FILES)
 
-$(OBJ_DIR)/character.o: $(SRC_DIR)/character.c $(INCLUDE_DIR)/character.h
+$(OBJ_DIR)/character.o: $(SRC_DIR)/character.c $(HEADER_FILES)
 	gcc $(GCC_VERSION) $(FLAGS) -I$(INCLUDE_DIR) -c $(SRC_DIR)/character.c -o $(OBJ_DIR)/character.o $(LINKER_FILES)
 
-$(OBJ_DIR)/player.o: $(SRC_DIR)/player.c $(INCLUDE_DIR)/player.h
+$(OBJ_DIR)/player.o: $(SRC_DIR)/player.c $(HEADER_FILES)
 	gcc $(GCC_VERSION) $(FLAGS) -I$(INCLUDE_DIR) -c $(SRC_DIR)/player.c -o $(OBJ_DIR)/player.o $(LINKER_FILES)
 
-$(OBJ_DIR)/enemies.o: $(SRC_DIR)/enemies.c $(INCLUDE_DIR)/enemies.h
+$(OBJ_DIR)/enemies.o: $(SRC_DIR)/enemies.c $(HEADER_FILES)
 	gcc $(GCC_VERSION) $(FLAGS) -I$(INCLUDE_DIR) -c $(SRC_DIR)/enemies.c -o $(OBJ_DIR)/enemies.o $(LINKER_FILES)
 
-$(OBJ_DIR)/bullet.o: $(SRC_DIR)/bullet.c $(INCLUDE_DIR)/bullet.h
+$(OBJ_DIR)/bullet.o: $(SRC_DIR)/bullet.c $(HEADER_FILES)
 	gcc $(GCC_VERSION) $(FLAGS) -I$(INCLUDE_DIR) -c $(SRC_DIR)/bullet.c -o $(OBJ_DIR)/bullet.o $(LINKER_FILES)
 
-$(OBJ_DIR)/background.o: $(SRC_DIR)/background.c $(INCLUDE_DIR)/background.h
+$(OBJ_DIR)/background.o: $(SRC_DIR)/background.c $(HEADER_FILES)
 	gcc $(GCC_VERSION) $(FLAGS) -I$(INCLUDE_DIR) -c $(SRC_DIR)/background.c -o $(OBJ_DIR)/background.o $(LINKER_FILES)
 
 recompile_everything:

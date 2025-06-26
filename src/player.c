@@ -1,5 +1,6 @@
 #include "character.h"
 #include "constants.h"
+#include "initialize.h"
 
 #include <stdio.h>
 
@@ -11,7 +12,10 @@
  */
 character create_player(){
 
-  character newPlayer = create_character(WIDTH_RES/2.0 - (PLAYER_ENEMY_WIDTH/2), HEIGHT_RES- 2*PLAYER_ENEMY_HEIGHT, WIDTH_RES/2.0 + (PLAYER_ENEMY_WIDTH/2), HEIGHT_RES-PLAYER_ENEMY_HEIGHT, PLAYER, RECTANGLE);
+  ALLEGRO_BITMAP* player_img = al_load_bitmap("img/nave.png");
+  assert_pointer_not_null(player_img, "Nao consegui abrir a imagem do player!\n", ERRO_ABERTURA_IMAGEM);
+
+  character newPlayer = create_character(WIDTH_RES/2.0 - (PLAYER_ENEMY_WIDTH/2), HEIGHT_RES- 2*PLAYER_ENEMY_HEIGHT, WIDTH_RES/2.0 + (PLAYER_ENEMY_WIDTH/2), HEIGHT_RES-PLAYER_ENEMY_HEIGHT, PLAYER, BITMAP, player_img);
 
   return newPlayer;
 

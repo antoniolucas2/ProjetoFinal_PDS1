@@ -3,6 +3,8 @@
 
 #include "character.h"
 
+#include <allegro5/allegro_image.h>
+
 typedef struct STRUCT_ENEMIES{
 
   character** matrix_enemies;
@@ -10,6 +12,8 @@ typedef struct STRUCT_ENEMIES{
   int totalEnemies;
   int currentLineToMove;
   int direction;
+
+  ALLEGRO_BITMAP* array_bitmaps[3];
 
 }enemies;
 

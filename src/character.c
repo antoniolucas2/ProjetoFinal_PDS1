@@ -35,14 +35,11 @@ character create_character(float posX1, float posY1, float posX2, float posY2, e
 
   newCharacter.active = true;
 
-  const char* img_name;
-
   if(typeShowing == BITMAP){
 
     va_start(args, typeShowing);
 
-    img_name = va_arg(args, const char*);
-    newCharacter.img = al_load_bitmap(img_name);
+    newCharacter.img = va_arg(args, ALLEGRO_BITMAP*);
     assert_pointer_not_null(newCharacter.img, "Nao consegui abrir a imagem pra personagem!\n", ERRO_ABERTURA_IMAGEM);
 
     va_end(args);

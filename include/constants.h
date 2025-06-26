@@ -22,6 +22,8 @@ enum ERROS_ALLEGRO{ALLEGRO_NAO_INICIOU = 1,
                    ERRO_ABERTURA_IMAGEM,
                    TOTAL_ERROS};
 
+enum CURRENT_SCREEN{MENU = 1, GAME};
+
 // Total de samples para o audio no Allegro. Por padrao, estou usando 16
 #define TOTAL_AUDIO_SAMPLES 16
 
@@ -58,7 +60,7 @@ enum ERROS_ALLEGRO{ALLEGRO_NAO_INICIOU = 1,
 #define CEIL_DISTANCE 100
 
 //Calculo quantos frames quero para poder mover os inimigos
-#define TOTAL_FRAMES_TO_MOVE 3
+#define TOTAL_FRAMES_TO_MOVE 5
 
 //Dimensoes para a bala
 #define BULLET_WIDTH 5
@@ -69,5 +71,14 @@ enum ERROS_ALLEGRO{ALLEGRO_NAO_INICIOU = 1,
 #define BG_R 118
 #define BG_G 171
 #define BG_B 250
+
+//Total de frames que o aviso dos pontos fica na tela
+#define FRAME_POINTS 30
+
+// Velocidade vertical dos pontos
+#define POINTS_VERTICAL_SPEED 1
+
+// Total de FPS para o fade da logo
+#define FPS_FADE_LOGO 120
 
 #endif

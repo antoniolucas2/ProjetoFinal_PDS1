@@ -1,6 +1,7 @@
 #include "character.h"
 #include "constants.h"
 #include "enemies.h"
+#include "background.h"
 
 #include <stdio.h>
 #include <allegro5/allegro_primitives.h>
@@ -73,7 +74,7 @@ void move_bullet(character* bullet){
 
 }
 
-enum TYPE_CHARACTER draw_bullet(character* bullet, enemies* all_enemies){
+enum TYPE_CHARACTER draw_bullet(character* bullet, enemies* all_enemies, background* curr_background){
   
   move_bullet(bullet);
 
@@ -102,6 +103,12 @@ enum TYPE_CHARACTER draw_bullet(character* bullet, enemies* all_enemies){
       
         touched = true;
         enemy_type = all_enemies->matrix_enemies[currLine][i].typeCharacter;
+        points_warning points;
+        points.currentPoints = (enemy_type == ENEMY_100) ? 100 : (enemy_type == ENEMY_250) ? 250 : 500;
+        points.posX = currEnemy->posX1 + PLAYER_ENEMY_WIDTH/2;
+        points.posY = currEnemy->posY1 - 1;
+        points.frames_left = FRAME_POINTS;
+        add_score_background(curr_background, points);
         remove_enemy(all_enemies, currLine, i);
         break;
 
