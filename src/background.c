@@ -16,7 +16,6 @@ background create_background(ALLEGRO_COLOR background_color, character current_p
   background newBackground;
 
   int y_bg = current_player.posY2+1;
-  printf("Eita! %d\n", y_bg);
 
   newBackground.soil = create_character(0, y_bg, WIDTH_RES, HEIGHT_RES, BACKGROUND, RECTANGLE);
   newBackground.totalScore = 0;
