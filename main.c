@@ -108,7 +108,6 @@ int main(){
   while(!done){
 
     al_wait_for_event(queue, &event);
-    //printf("Tempo: %ld\n", al_get_timer_count(timer));
     curr_frame = al_get_timer_count(timer);
 
     switch(event.type){
@@ -209,9 +208,6 @@ int main(){
     }
 
     else if(curr_screen == HOW_TO_PLAY_SCREEN){
-
-
-      //printf("eita %d\n", curr_frame);
 
       switch(event.type){
 
@@ -340,7 +336,6 @@ int main(){
 
       if(redraw && al_is_event_queue_empty(queue)){
 
-        printf("Ue\n");
         redraw = false;
 
         draw_background(&curr_background, font_score, font_points_warning);
