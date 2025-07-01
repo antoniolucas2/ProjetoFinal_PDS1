@@ -228,8 +228,6 @@ void remove_enemy(enemies* all_enemies, int lineEnemy, int indexEnemy, ALLEGRO_S
 
   }
 
-  printf("acho que toquei em linhas %d pos %d, e a linha tem um total de %d!\n", lineEnemy, indexEnemy, all_enemies->totalEachLine[lineEnemy]);
-
   al_play_sample(explode, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
   all_enemies->matrix_enemies[lineEnemy][indexEnemy].active = false;
   character enemyElim = all_enemies->matrix_enemies[lineEnemy][indexEnemy];
@@ -243,8 +241,6 @@ void remove_enemy(enemies* all_enemies, int lineEnemy, int indexEnemy, ALLEGRO_S
 
   all_enemies->totalEachLine[lineEnemy]--;
   all_enemies->totalEnemies--;
-
-  printf("sai da funcaum\n");
 
 }
 
